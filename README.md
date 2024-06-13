@@ -326,3 +326,41 @@ Step 2: Test Application Gateway
 •By following these steps, you can create and test an Azure Application Gateway to manage and optimize traffic to your web applications.
 
 QUESTION - 5
+
+To set up a domain, configure a DNS server, and direct traffic to your server using the Azure CLI, you would follow these general steps:
+
+Step 1: Create a Resource Group
+
+az group create --name MyResourceGroup --location <location>
+
+Step 2: Create a Virtual Network and Subnet
+
+az network vnet create --resource-group MyResourceGroup --name MyVnet --address-prefixes 10.0.0.0/16 --subnet-name MySubnet --subnet-prefixes 10.0.0.0/24
+
+Step 3: Create a Virtual Machine
+
+az vm create --resource-group MyResourceGroup --name MyVM --image UbuntuLTS --admin-username azureuser --generate-ssh-keys --vnet-name MyVnet --subnet MySubnet
+
+Step 4: Assign a Public IP Address to the VM (if needed)
+
+az network public-ip create --resource-group MyResourceGroup --name MyPublicIP
+az network nic ip-config update --resource-group MyResourceGroup --name ipconfigmyvm --nic-name MyVMVMNic --public-ip-address MyPublicIP
+
+Step 5: Install and Configure DNS Server on the VM
+SSH into the VM and install a DNS server software such as BIND or dnsmasq.
+
+Step 6: Configure DNS Records
+Add DNS records for your domain pointing to the public IP address of your VM.
+
+Step 7: Update DNS Server Settings
+Update the DNS server settings in your virtual network to point to your DNS server.
+
+az network vnet update --resource-group MyResourceGroup --name MyVnet --dns-servers <private-ip-of-your-dns-server>
+
+Step 8: Verify and Test
+
+Verify that your domain resolves to the correct IP address by using tools like nslookup or dig. You can also try accessing your domain in a web browser to see if it loads your server.
+
+Ensure that your DNS server is properly configured to handle incoming traffic and direct it to the appropriate resources on your VM.
+
+These steps should guide you through setting up a domain, configuring a DNS server, and directing traffic to your server using the Azure CLI. Remember to replace placeholders like <location> and <private-ip-of-your-dns-server> with appropriate val
