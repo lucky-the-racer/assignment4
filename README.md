@@ -111,12 +111,18 @@ Resources:
  3.Peering DevelopingVNet with ManagementVNet:
 
 •BY COMMAND LINE: (BASH)
+#commnds for peering
 
 az network vnet peering create --name prodTomgmtPeering --resource-group mygroup --vnet-name productionvnet --remote-vnet managementvnet --allow-vnet-access
+
 az network vnet peering create --name mgmtToprodPeering --resource-group mygroup --vnet-name managementvnet --remote-vnet productionvnet --allow-vnet-access
+
 az network vnet peering create --name TestToMgmtPeering --resource-group MyResourceGroup --vnet-name TestingVNet --remote-vnet ManagementVNet --allow-vnet-access
+
 az network vnet peering create --name MgmtToTestPeering --resource-group MyResourceGroup --vnet-name ManagementVNet --remote-vnet TestingVNet --allow-vnet-access
+
 az network vnet peering create --name DevToMgmtPeering --resource-group MyResourceGroup --vnet-name DevelopingVNet --remote-vnet ManagementVNet --allow-vnet-access
+
 az network vnet peering create --name MgmtToDevPeering --resource-group MyResourceGroup --vnet-name ManagementVNet --remote-vnet DevelopingVNet --allow-vnet-access
 
 •Now we Create Virtual Machines in Each VNet
@@ -139,13 +145,22 @@ az network vnet peering create --name MgmtToDevPeering --resource-group MyResour
 
 •BY COMMAND LINE: (BASH)
 
+#commands for ping
+
 az vm list-ip-addresses --name ManagementVM --resource-group MyResourceGroup --output table
+
 ssh azureuser@<public_ip>
+
 az vm list-ip-addresses --name ProductionVM --resource-group MyResourceGroup --output table
+
 az vm list-ip-addresses --name TestingVM --resource-group MyResourceGroup --output table
+
 az vm list-ip-addresses --name DevelopingVM --resource-group MyResourceGroup --output table
+
 ping <private_ip_of_ProductionVM>
+
 ping <private_ip_of_TestingVM>
+
 ping <private_ip_of_DevelopingVM>
 
 QUESTION-3
@@ -155,45 +170,63 @@ QUESTION-3
 •Internal Load Balancer:
 
 1.Navigate to the Azure Portal:
+
 •Go to the Azure Portal at portal.azure.com.
 
 2.Create a New Resource:
+
 •Click on "+ Create a resource" in the left menu.
 
 3.Search for Load Balancer:
+
 •In the search bar, type "Load Balancer" and press Enter.
 
 4.Select Internal Load Balancer:
+
 •Click on "Internal Load Balancer" from the search results.
 
 5.Fill in Load Balancer Details:
+
 •Subscription: Choose your subscription.
+
 •Resource Group: Select or create a resource group.
+
 •Name: Enter a name for your Internal Load Balancer.
+
 •Region: Choose the region where you want to deploy the load balancer.
+
 •Virtual network: Select the virtual network where you want to deploy the load balancer.
+
 •Subnet: Choose a subnet within the selected virtual network.
+
 •IP address: Specify the IP address for the internal load balancer.
+
 •Configure Backend Pool and Health Probes:
 
 6.Add backend pool by selecting the virtual machines or availability sets to be load balanced.
+
 •Configure health probes to check the health of your backend VMs.
 
 7.Review and Create:
+
 •Review the settings and click "Create" to deploy the Internal Load Balancer.
 
 :External Load Balancer:
 
 1.Navigate to the Azure Portal:
+
 •Go to the Azure Portal at portal.azure.com.
 
 2.Create a New Resource:
+
 •Click on "+ Create a resource" in the left menu.
 
 3.Search for Load Balancer:
+
 •In the search bar, type "Load Balancer" and press Enter.
 
 4.Select External Load Balancer:
+
 •Click on "External Load Balancer" from the search results.
 
 5.Fill in Load Balancer Details:
@@ -201,69 +234,95 @@ QUESTION-3
 •Follow steps 5-7 from the Internal Load Balancer section, but ensure you choose the appropriate settings for an external load balancer, including a public IP address.
 
 6.Configure Frontend IP Configuration:
+
 •For an external load balancer, you need to configure a public IP address as the frontend IP configuration.
 
 7.Review and Create:
+
 •Review the settings and click "Create" to deploy the External Load Balancer.
 
 QUESTION- 4
 
 Step 1: Create Application Gateway
+
 1.Navigate to the Azure Portal:
+
  •Go to the Azure Portal at portal.azure.com.
 
 2.Create a New Resource:
+
 •Click on "+ Create a resource" in the left menu.
 
 3.Search for Application Gateway:
+
 •In the search bar, type "Application Gateway" and press Enter.
 
 4.Select Application Gateway:
+
 •Click on "Application Gateway" from the search results.
 
 5.Fill in Application Gateway Details:
 
 •Subscription: Choose your subscription.
+
 •Resource Group: Select or create a resource group.
+
 •Name: Enter a name for your Application Gateway.
+
 •Region: Choose the region where you want to deploy the Application Gateway.
+
 •SKU: Choose the appropriate SKU based on your requirements (Standard_v2 is recommended for most scenarios).
+
 •Tier: Select the appropriate tier (Standard or WAF).
+
 •Virtual network: Select the virtual network where you want to deploy the Application Gateway.
+
 •Subnet: Choose a subnet within the selected virtual network.
 
 6.Configure Backend Pool and HTTP Settings:
+
 •Add backend pool by specifying the IP addresses or DNS names of the backend servers.
+
 •Configure HTTP settings like port, protocol, and cookie-based affinity.
 
 7.Configure Frontend IP and Listener:
+
 •Define the frontend IP configuration, including a public IP address (if needed).
+
 •Add a listener with appropriate settings (port, protocol, and SSL if required).
 
 8.Configure Routing Rules:
+
 •Define routing rules to route incoming requests to appropriate backend pools based on the request path or host header.
 
 9.Review and Create:
+
 •Review the settings and click "Create" to deploy the Application Gateway.
 
 Step 2: Test Application Gateway
 
 1.Access Application Gateway's Public IP:
+
 •Once the Application Gateway is deployed, note down its public IP address.
 
 2.Access Backend Service:
+
 •Ensure that your backend service (e.g., a web server) is running and accessible within your virtual network.
 
 3.Test Access to Backend Service:
+
 •Open a web browser and navigate to the public IP address of the Application Gateway.
+
 •You should be able to access your backend service through the Application Gateway.
 
 4.Test Load Balancing and Routing:
+
 •If you configured multiple backend pools and routing rules, test the load balancing and routing by accessing different paths or hostnames defined in your routing rules.
 
 5.Monitor Application Gateway Metrics:
 
 •After testing, monitor the performance and health of your Application Gateway using Azure Monitor metrics and logs.
+
 •By following these steps, you can create and test an Azure Application Gateway to manage and optimize traffic to your web applications.
 
 QUESTION - 5
