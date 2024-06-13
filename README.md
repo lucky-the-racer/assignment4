@@ -80,24 +80,23 @@ so for creating a virtual network i go on azure portal and then use these steps
 
 B. Create Four VNets and Configure Hub-and-Spoke Architecture
 Resources:
+•Virtual Network Documentation
+•Create Management VNet (HUB):
 
-Virtual Network Documentation
-Create Management VNet (HUB):
+•Go to "Virtual networks" and click "Add.
+•Enter the VNet name (e.g., managementvnet), select the resource group mygroup, and set the address space to 10.1.0.0/16.
+•Click "Review + Create" and then "Create."
+•Create Production, testing, and developing VNets:
 
-*Go to "Virtual networks" and click "Add.
-*Enter the VNet name (e.g., managementvnet), select the resource group mygroup, and set the address space to 10.1.0.0/16.
-*Click "Review + Create" and then "Create."
-*Create Production, testing, and developing VNets:
-
-Repeat the steps for creating VNets for:
-*productionvnet: Address space 10.2.0.0/16
-*testingvnet: Address space 10.3.0.0/16
-*developingVNet: Address space 10.4.0.0/16
-Now for peering we use the bash and these commands
-1.Peering productionvnet with managementvnet:
-2.Peering TestingVNet with ManagementVNet:
-3.Peering DevelopingVNet with ManagementVNet:
-BY COMMAND LINE: (BASH)
+•Repeat the steps for creating VNets for:
+•productionvnet: Address space 10.2.0.0/16
+•testingvnet: Address space 10.3.0.0/16
+•developingVNet: Address space 10.4.0.0/16
+•Now for peering we use the bash and these commands
+ 1.Peering productionvnet with managementvnet:
+ 2.Peering TestingVNet with ManagementVNet:
+ 3.Peering DevelopingVNet with ManagementVNet:
+•BY COMMAND LINE: (BASH)
 az network vnet peering create --name prodTomgmtPeering --resource-group mygroup --vnet-name productionvnet --remote-vnet managementvnet --allow-vnet-access
 az network vnet peering create --name mgmtToprodPeering --resource-group mygroup --vnet-name managementvnet --remote-vnet productionvnet --allow-vnet-access
 az network vnet peering create --name TestToMgmtPeering --resource-group MyResourceGroup --vnet-name TestingVNet --remote-vnet ManagementVNet --allow-vnet-access
@@ -105,18 +104,18 @@ az network vnet peering create --name MgmtToTestPeering --resource-group MyResou
 az network vnet peering create --name DevToMgmtPeering --resource-group MyResourceGroup --vnet-name DevelopingVNet --remote-vnet ManagementVNet --allow-vnet-access
 az network vnet peering create --name MgmtToDevPeering --resource-group MyResourceGroup --vnet-name ManagementVNet --remote-vnet DevelopingVNet --allow-vnet-access
 
-Now we Create Virtual Machines in Each VNet
-we use bash and create virtual machine in each virtual network.
-Now we Verify Connectivity
+•Now we Create Virtual Machines in Each VNet
+•we use bash and create virtual machine in each virtual network.
+•Now we Verify Connectivity
 1.SSH into ManagementVM:
-*Retrieve the public IP of ManagementVM:
-*SSH into the ManagementVM (replace <public_ip> with the actual IP):
+•Retrieve the public IP of ManagementVM:
+•SSH into the ManagementVM (replace <public_ip> with the actual IP):
 
 2.Ping Other VMs:
-*Retrieve the private IP addresses of the other VMs:
-*Use the private IP addresses to ping each VM from ManagementVM
+•Retrieve the private IP addresses of the other VMs:
+•Use the private IP addresses to ping each VM from ManagementVM
 
-BY COMMAND LINE: (BASH)
+•BY COMMAND LINE: (BASH)
 az vm list-ip-addresses --name ManagementVM --resource-group MyResourceGroup --output table
 ssh azureuser@<public_ip>
 az vm list-ip-addresses --name ProductionVM --resource-group MyResourceGroup --output table
