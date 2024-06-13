@@ -1,3 +1,7 @@
+QUESTION -1
+Resources : https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview
+
+QUESTION-2
 A. Create a VNet with Two Subnets
 so for creating a virtual network i go on azure portal and then use these steps
 1. Create a Resource Group:
@@ -91,30 +95,35 @@ Repeat the steps for creating VNets for:
 *developingVNet: Address space 10.4.0.0/16
 Now for peering we use the bash and these commands
 1.Peering productionvnet with managementvnet:
+2.Peering TestingVNet with ManagementVNet:
+3.Peering DevelopingVNet with ManagementVNet:
+BY COMMAND LINE: (BASH)
 az network vnet peering create --name prodTomgmtPeering --resource-group mygroup --vnet-name productionvnet --remote-vnet managementvnet --allow-vnet-access
 az network vnet peering create --name mgmtToprodPeering --resource-group mygroup --vnet-name managementvnet --remote-vnet productionvnet --allow-vnet-access
-2.Peering TestingVNet with ManagementVNet:
 az network vnet peering create --name TestToMgmtPeering --resource-group MyResourceGroup --vnet-name TestingVNet --remote-vnet ManagementVNet --allow-vnet-access
 az network vnet peering create --name MgmtToTestPeering --resource-group MyResourceGroup --vnet-name ManagementVNet --remote-vnet TestingVNet --allow-vnet-access
-3.Peering DevelopingVNet with ManagementVNet:
 az network vnet peering create --name DevToMgmtPeering --resource-group MyResourceGroup --vnet-name DevelopingVNet --remote-vnet ManagementVNet --allow-vnet-access
 az network vnet peering create --name MgmtToDevPeering --resource-group MyResourceGroup --vnet-name ManagementVNet --remote-vnet DevelopingVNet --allow-vnet-access
+
 Now we Create Virtual Machines in Each VNet
 we use bash and create virtual machine in each virtual network.
 Now we Verify Connectivity
 1.SSH into ManagementVM:
 *Retrieve the public IP of ManagementVM:
-az vm list-ip-addresses --name ManagementVM --resource-group MyResourceGroup --output table
 *SSH into the ManagementVM (replace <public_ip> with the actual IP):
-ssh azureuser@<public_ip>
-2.Ping Other VMs:
 
+2.Ping Other VMs:
 *Retrieve the private IP addresses of the other VMs:
+*Use the private IP addresses to ping each VM from ManagementVM
+
+BY COMMAND LINE: (BASH)
+az vm list-ip-addresses --name ManagementVM --resource-group MyResourceGroup --output table
+ssh azureuser@<public_ip>
 az vm list-ip-addresses --name ProductionVM --resource-group MyResourceGroup --output table
 az vm list-ip-addresses --name TestingVM --resource-group MyResourceGroup --output table
 az vm list-ip-addresses --name DevelopingVM --resource-group MyResourceGroup --output table
-*Use the private IP addresses to ping each VM from ManagementVM
 ping <private_ip_of_ProductionVM>
 ping <private_ip_of_TestingVM>
 ping <private_ip_of_DevelopingVM>
 
+QUESTION-3
